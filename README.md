@@ -1,13 +1,31 @@
-# TaqHome Project
+# Taqtile Project
 
 ## Project's Description
 
-Projeto de onboard técnico do treinamento de estagiários da Taqtile, que consiste em desenvolver uma aplicação com CRUD de usuários utilizando React.
+Development onboarding project for Taqtile’s internship training, focused on creating a user CRUD application using React.
+
 
 ## Environment and tools
+To get this application running, the following tools need to be installed. These are the versions used during development and using different versions may lead to unexpected behavior.
 
-text text text
+- TypeScript
+- NodeJS v18.17.1
+- React v19.1.0
+
+VSCode, ESLint, Prettier and Create React App were also used during the process.
 
 ## Steps to run and debug
+1. Clone the repository
+```bash
+git clone https://github.com/indigotech/onboard-julia-carvalho
+```
 
-text text text
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Run the application
+```bash
+npm start
+```
