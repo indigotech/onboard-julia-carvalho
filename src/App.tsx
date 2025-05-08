@@ -1,9 +1,8 @@
-function App() {
-  console.log("Hello World")
+import React from "react";
+import Login from "./pages/login";
 
-  return (
-    <h1> Hello World </h1>
-  );
+function App() {
+  return <Login />;
 }
 
 export default App;
