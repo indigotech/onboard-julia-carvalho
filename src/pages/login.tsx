@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { isValidEmail, isValidPassword } from "../utils/validation";
+import apiClient from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [apiError, setApiError] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     let valid = true;
 
     if (!isValidEmail(email)) {
       setEmailError(
-        "Seu e-mail deve ter o formato usuario@dominio.com. Tente novamente.",
+        "Seu e-mail deve ter o formato usuario@dominio.com ou usuario@dominio.com.br. Tente novamente.",
       );
       valid = false;
     } else {
@@ -29,8 +31,24 @@ const Login = () => {
     }
 
     if (valid) {
-      console.log("Login válido!");
-      //TO DO
+      setApiError("");
+
+      try {
+        const response = await apiClient.post("/authenticate", {
+          email,
+          password,
+        });
+        console.log("Login válido!");
+        localStorage.setItem("token", response.data.data.token);
+      } catch (error: any) {
+        const apiErrorMessage = error?.response?.data?.errors?.[0]?.message;
+
+        if (apiErrorMessage) {
+          setApiError(apiErrorMessage);
+        } else {
+          setApiError("Erro inesperado. Tente novamente.");
+        }
+      }
     }
   };
 
@@ -60,6 +78,7 @@ const Login = () => {
         />
         {passwordError && <p>{passwordError}</p>}
       </div>
+      {apiError && <p>{apiError}</p>}
       <button onClick={handleLogin}>Entrar</button>
     </>
   );
