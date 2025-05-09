@@ -8,13 +8,13 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
 
   const handleLogin = () => {
-    let Valid = true;
+    let valid = true;
 
     if (!isValidEmail(email)) {
       setEmailError(
         "Seu e-mail deve ter o formato usuario@dominio.com. Tente novamente.",
       );
-      Valid = false;
+      valid = false;
     } else {
       setEmailError("");
     }
@@ -23,12 +23,12 @@ const Login = () => {
       setPasswordError(
         "Sua senha deve conter pelo menos 7 caracteres, com letras e números. Tente novamente.",
       );
-      Valid = false;
+      valid = false;
     } else {
       setPasswordError("");
     }
 
-    if (Valid) {
+    if (valid) {
       console.log("Login válido!");
       //TO DO
     }
