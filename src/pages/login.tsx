@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 import { apiClient } from "../services/api";
-import { CustomButton } from "./components/custom-button";
+import { CustomButton } from "../components/custom-button";
 
 const Login = () => {
   const [email, setEmail] = useState("");
