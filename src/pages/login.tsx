@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { isValidEmail, isValidPassword } from "../utils/validation";
-import apiClient from "../services/api";
+import { apiClient } from "../services/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,7 +38,6 @@ const Login = () => {
           email,
           password,
         });
-        console.log("Login válido!");
         localStorage.setItem("token", response.data.data.token);
       } catch (error: any) {
         const apiErrorMessage = error?.response?.data?.errors?.[0]?.message;
