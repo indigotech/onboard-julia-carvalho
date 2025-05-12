@@ -1,4 +1,4 @@
-const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*\.com$/;
+const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*\.com(\.br)?$/;
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{7,}$/;
 
 export const isValidEmail = (email: string): boolean => {
