@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 import { apiClient } from "../services/api";
+import { CustomButton } from "../components/custom-button";
 
-const Login = () => {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [apiError, setApiError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     let valid = true;
@@ -32,6 +36,7 @@ const Login = () => {
 
     if (valid) {
       setApiError("");
+      setLoading(true);
 
       try {
         const response = await apiClient.post("/authenticate", {
@@ -39,6 +44,7 @@ const Login = () => {
           password,
         });
         localStorage.setItem("token", response.data.data.token);
+        navigate("/user-list");
       } catch (error: any) {
         const apiErrorMessage = error?.response?.data?.errors?.[0]?.message;
 
@@ -47,6 +53,8 @@ const Login = () => {
         } else {
           setApiError("Erro inesperado. Tente novamente.");
         }
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -78,9 +86,9 @@ const Login = () => {
         {passwordError && <p>{passwordError}</p>}
       </div>
       {apiError && <p>{apiError}</p>}
-      <button onClick={handleLogin}>Entrar</button>
+      <div>
+        <CustomButton title="Entrar" onClick={handleLogin} loading={loading} />
+      </div>
     </>
   );
 };
-
-export default Login;

@@ -1,8 +1,11 @@
 import React from "react";
-import Login from "./pages/login";
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./routes/routes";
 
-function App() {
-  return <Login />;
-}
-
-export default App;
+export const App = () => {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+  );
+};
