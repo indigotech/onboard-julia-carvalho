@@ -7,33 +7,21 @@ interface ButtonProps {
   loading?: boolean;
 }
 
-export const CustomButton: React.FC<ButtonProps> = ({
-  title,
-  onClick,
-  loading,
-}) => {
+const CustomButtonStyle: React.CSSProperties = {
+  width: "150px",
+  height: "48px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+export const CustomButton: React.FC<ButtonProps> = (props) => {
+  const { title, loading, onClick } = props;
   return (
-    <button
-      className="bg-red-500 text-white px-4 py-2"
-      onClick={onClick}
-      disabled={loading}
-      style={{
-        width: "150px",
-        height: "48px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <button onClick={onClick} disabled={loading} style={CustomButtonStyle}>
       {loading && (
-        <div
-          style={{
-            position: "absolute",
-            left: "16px",
-          }}
-        >
-          {" "}
-          <Spinner />{" "}
+        <div>
+          <Spinner />
         </div>
       )}
       {title}
