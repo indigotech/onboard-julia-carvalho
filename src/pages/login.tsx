@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 import { apiClient } from "../services/api";
 import { CustomButton } from "../components/custom-button";
 
-const Login = () => {
+export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [apiError, setApiError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     let valid = true;
@@ -42,6 +44,7 @@ const Login = () => {
           password,
         });
         localStorage.setItem("token", response.data.data.token);
+        navigate("/user-list");
       } catch (error: any) {
         const apiErrorMessage = error?.response?.data?.errors?.[0]?.message;
 
@@ -89,5 +92,3 @@ const Login = () => {
     </>
   );
 };
-
-export default Login;
