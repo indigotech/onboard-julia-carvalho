@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { UserCard } from "../components/users/user-card";
 import { apiClient } from "../services/api";
+import { InfiniteScroll } from "../components/infinite-scroll";
 
 interface User {
   id: string;
@@ -11,27 +12,68 @@ interface User {
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const token = localStorage.getItem("token");
+
+  const fetchUsers = useCallback(async () => {
+    if (!token || loading || !hasMore) return;
+
+    setLoading(true);
+    try {
+      const response = await apiClient.get("/users", {
+        params: { offset, limit: 10 },
+      });
+
+      const userList: User[] = response?.data?.data?.nodes ?? [];
+
+      setUsers((prev) => {
+        const existingIds = new Set(prev.map((u) => u.id));
+        const newUsers = userList.filter((u) => !existingIds.has(u.id));
+        return [...prev, ...newUsers];
+      });
+
+      setHasMore(userList.length === 10);
+      setOffset((prev) => prev + 10);
+    } catch {
+      setError("Erro Inesperado.");
+      setHasMore(false);
+    } finally {
+      setLoading(false);
+    }
+  }, [offset, hasMore, loading, token]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        await apiClient.get("/users").then((response) => {
-          const userList = response?.data?.data?.nodes ?? [];
-          setUsers(userList);
-        });
-      } catch (err: any) {
-        setError("Erro ao carregar usuários. Verifique o login e o token.");
-      }
-    };
+    if (!token) {
+      setError("Erro ao carregar usuários. Verifique o login e o token.");
+      setHasMore(false);
+      return;
+    }
+
     fetchUsers();
-  }, []);
+  }, [token]);
 
   return (
     <div>
       {error && <p>{error}</p>}
-      {users.map((user) => (
-        <UserCard key={user.id} userEmail={user.email} userName={user.name} />
-      ))}
+
+      {!error &&
+        users.map((user) => (
+          <UserCard key={user.id} userEmail={user.email} userName={user.name} />
+        ))}
+
+      {!error && (
+        <>
+          <InfiniteScroll
+            loadMore={fetchUsers}
+            hasMore={hasMore}
+            loading={loading}
+          />
+          {loading && <p>Carregando usuários...</p>}
+        </>
+      )}
     </div>
   );
 };
