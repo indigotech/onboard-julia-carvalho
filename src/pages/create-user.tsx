@@ -32,12 +32,8 @@ export const CreateUser = () => {
     if (isValid) {
       try {
         await apiClient.post("/users", {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
+          ...formData,
           birthDate: formData.birthDate?.toISOString().split("T")[0],
-          password: formData.password,
-          role: formData.role,
         });
 
         navigate("/user-list");
