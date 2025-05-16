@@ -31,3 +31,56 @@ export const isValidBirthDate = (dateStr: Date) => {
 
   return !isNaN(date.getTime()) && date <= today && date >= minDate;
 };
+
+export interface UserFormData {
+  email: string;
+  password: string;
+  name: string;
+  phone: string;
+  birthDate: Date | null;
+  role: string;
+}
+
+export interface ValidationErrors {
+  email?: string;
+  password?: string;
+  name?: string;
+  phone?: string;
+  birthDate?: string;
+  role?: string;
+}
+
+export const ValidateFields = (
+  data: UserFormData,
+): { isValid: boolean; errors: ValidationErrors } => {
+  const errors: ValidationErrors = {};
+  let isValid = true;
+
+  if (!isValidEmail(data.email)) {
+    errors.email =
+      "Seu e-mail deve ter o formato usuario@dominio.com ou usuario@dominio.com.br. Tente novamente.";
+    isValid = false;
+  }
+  if (!isValidPassword(data.password)) {
+    errors.password =
+      "Sua senha deve conter pelo menos 7 caracteres, com letras e números. Tente novamente.";
+    isValid = false;
+  }
+  if (!isValidName(data.name)) {
+    errors.name =
+      "Seu nome deve conter pelo menos 2 palavras e apenas letras. Tente novamente.";
+    isValid = false;
+  }
+  if (!isValidPhone(data.phone)) {
+    errors.phone =
+      "Seu telefone deve conter apenas números e ter entre 10 e 11 dígitos. Tente novamente.";
+    isValid = false;
+  }
+  if (!data.birthDate || !isValidBirthDate(data.birthDate)) {
+    errors.birthDate =
+      "Sua data de nascimento deve ser uma data válida e não pode ser maior que a data atual. Tente novamente.";
+    isValid = false;
+  }
+
+  return { isValid, errors };
+};
