@@ -24,10 +24,14 @@ export const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
     );
 
     const current = loaderRef.current;
-    if (current) observer.observe(current);
+    if (current) {
+      observer.observe(current);
+    }
 
     return () => {
-      if (current) observer.unobserve(current);
+      if (current) {
+        observer.unobserve(current);
+      }
       observer.disconnect();
     };
   }, [hasMore, loading, loadMore]);

@@ -29,13 +29,9 @@ export const UserList = () => {
 
       const userList: User[] = response?.data?.data?.nodes ?? [];
 
-      setUsers((prev) => {
-        const existingIds = new Set(prev.map((u) => u.id));
-        const newUsers = userList.filter((u) => !existingIds.has(u.id));
-        return [...prev, ...newUsers];
-      });
+      setUsers((prev) => [...prev, ...userList]);
 
-      setHasMore(userList.length === 10);
+      setHasMore(response.data.data.pageInfo.hasNextPage);
       setOffset((prev) => prev + 10);
     } catch {
       setError("Erro Inesperado.");
@@ -51,8 +47,6 @@ export const UserList = () => {
       setHasMore(false);
       return;
     }
-
-    fetchUsers();
   }, [token]);
 
   return (
