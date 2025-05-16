@@ -70,14 +70,19 @@ export const UserList = () => {
 
   return (
     <div>
-      <div style={HeaderStyle}>
-        <div style={HeaderTitleStyle}> Lista de Usuários </div>
-        <CustomButton title="Criar um novo usuário" onClick={() => navigate("/create-user")} />
-      </div>
-      <div>
-        {error && <p>{error}</p>}
-        {!error &&
-          users.map((user) => (
+      {error ? (
+        <p>{error}</p>
+      ) : (
+        <>
+          <div style={HeaderStyle}>
+            <div style={HeaderTitleStyle}>Lista de Usuários</div>
+            <CustomButton
+              title="Criar um novo usuário"
+              onClick={() => navigate("/create-user")}
+            />
+          </div>
+
+          {users.map((user) => (
             <UserCard
               key={user.id}
               userEmail={user.email}
@@ -85,17 +90,14 @@ export const UserList = () => {
             />
           ))}
 
-        {!error && (
-          <>
-            <InfiniteScroll
-              loadMore={fetchUsers}
-              hasMore={hasMore}
-              loading={loading}
-            />
-            {loading && <p>Carregando usuários...</p>}
-          </>
-        )}
-      </div>
+          <InfiniteScroll
+            loadMore={fetchUsers}
+            hasMore={hasMore}
+            loading={loading}
+          />
+          {loading && <p>Carregando usuários...</p>}
+        </>
+      )}
     </div>
   );
 };
