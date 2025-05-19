@@ -87,6 +87,9 @@ export const UserList = () => {
               key={user.id}
               userEmail={user.email}
               userName={user.name}
+              onClick={() => {
+                navigate(`/user/${user.id}`);
+              }}
             />
           ))}
 
