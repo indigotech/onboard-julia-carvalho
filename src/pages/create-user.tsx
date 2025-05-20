@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { UserFormData, ValidateFields } from "../utils/validation";
 import { useNavigate } from "react-router";
 import { apiClient } from "../services/api";
+import { CustomButton } from "../components/custom-button";
+import { formField, title, header } from "../styles/global.style";
 
 export const CreateUser = () => {
   const [formData, setFormData] = useState<UserFormData>({
@@ -51,46 +53,57 @@ export const CreateUser = () => {
 
   return (
     <>
-      <div className="Heading">
-        <h1>Informe os dados do novo usuário:</h1>
+      <div className={header()}>
+        <h1 className={title()}>Informe os dados do novo usuário</h1>
       </div>
-      <div className="EmailInput">
-        <p>E-mail</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: !!errors.email }).label()}>E-mail</p>
         <input
           type="email"
           value={formData.email}
           placeholder="Digite o e-mail"
+          className={formField({ error: !!errors.email }).input()}
           onChange={(e) => handleChange("email", e.target.value)}
         />
-        {errors.email && <p>{errors.email}</p>}
+        {errors.email && (
+          <p className={formField().errorText()}>{errors.email}</p>
+        )}
       </div>
 
-      <div className="NameInput">
-        <p>Nome</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: !!errors.name }).label()}>Nome</p>
         <input
-          type="name"
+          type="text"
           value={formData.name}
           placeholder="Digite o nome"
           minLength={6}
+          className={formField({ error: !!errors.name }).input()}
           onChange={(e) => handleChange("name", e.target.value)}
         />
-        {errors.name && <p>{errors.name}</p>}
+        {errors.name && (
+          <p className={formField().errorText()}>{errors.name}</p>
+        )}
       </div>
 
-      <div className="PhoneInput">
-        <p>Telefone</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: !!errors.phone }).label()}>Telefone</p>
         <input
-          type="phone"
+          type="text"
           value={formData.phone}
           placeholder="Digite o telefone"
           minLength={10}
+          className={formField({ error: !!errors.phone }).input()}
           onChange={(e) => handleChange("phone", e.target.value)}
         />
-        {errors.phone && <p>{errors.phone}</p>}
+        {errors.phone && (
+          <p className={formField().errorText()}>{errors.phone}</p>
+        )}
       </div>
 
-      <div className="BirthDateInput">
-        <p>Data de Nascimento</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: !!errors.birthDate }).label()}>
+          Data de Nascimento
+        </p>
         <input
           type="date"
           value={
@@ -98,39 +111,50 @@ export const CreateUser = () => {
               ? formData.birthDate.toISOString().split("T")[0]
               : ""
           }
+          className={formField({ error: !!errors.birthDate }).input()}
           onChange={(e) => {
             const date = new Date(e.target.value);
             handleChange("birthDate", date);
           }}
         />
-        {errors.birthDate && <p>{errors.birthDate}</p>}
+        {errors.birthDate && (
+          <p className={formField().errorText()}>{errors.birthDate}</p>
+        )}
       </div>
 
-      <div className="PasswordInput">
-        <p>Senha</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: !!errors.password }).label()}>Senha</p>
         <input
           type="password"
           value={formData.password}
           placeholder="Digite sua senha"
           minLength={6}
+          className={formField({ error: !!errors.password }).input()}
           onChange={(e) => handleChange("password", e.target.value)}
         />
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && (
+          <p className={formField().errorText()}>{errors.password}</p>
+        )}
       </div>
 
-      <div className="RoleInput">
-        <p>Escolha a função do usuário</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: false }).label()}>
+          Escolha a função do usuário
+        </p>
         <select
           value={formData.role}
           onChange={(e) => handleChange("role", e.target.value)}
+          className={formField({ error: false }).select()}
         >
           <option value="user">Usuário</option>
           <option value="admin">Administrador</option>
         </select>
       </div>
-      {apiError && <p>{apiError}</p>}
-      <div>
-        <button onClick={handleCreateUser}>Criar</button>
+
+      {apiError && <p className={formField().errorText()}>{apiError}</p>}
+
+      <div className={formField().container()}>
+        <CustomButton title="Criar" onClick={handleCreateUser} />
       </div>
     </>
   );
