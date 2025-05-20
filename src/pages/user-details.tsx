@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router";
 import { userDetails } from "../styles/user-details.style";
 import { header, title } from "../styles/global.style";
 
-interface UserDetailsProps {
+interface UserInfo {
   id: string;
   email: string;
   name: string;
@@ -15,7 +15,7 @@ interface UserDetailsProps {
 }
 
 export const UserDetails = () => {
-  const [user, setUser] = useState<UserDetailsProps[]>([]);
+  const [user, setUser] = useState<UserInfo[]>([]);
   const [apiError, setApiError] = useState("");
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
@@ -27,7 +27,7 @@ export const UserDetails = () => {
 
     try {
       const response = await apiClient.get(`/users/${id}`);
-      const userDetails: UserDetailsProps = response?.data?.data ?? null;
+      const userDetails: UserInfo = response?.data?.data ?? null;
       setUser([userDetails]);
     } catch (error: any) {
       const apiErrorMessage = error?.response?.data?.errors?.[0]?.message;
