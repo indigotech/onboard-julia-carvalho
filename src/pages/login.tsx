@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { isValidEmail, isValidPassword } from "../utils/validation";
 import { apiClient } from "../services/api";
 import { CustomButton } from "../components/custom-button";
+import { formField, title, header } from "../styles/global.style";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -61,33 +62,45 @@ export const Login = () => {
 
   return (
     <>
-      <div className="Heading">
-        <h1>Bem-vindo(a) à Taqtile!</h1>
+      <div className={header()}>
+        <h1 className={title()}>Bem-vindo(a) à Taqtile!</h1>
       </div>
-      <div className="EmailInput">
-        <p>E-mail</p>
+      <div className={formField().container()}>
+        <p className={formField({ error: !!emailError }).label()}>E-mail</p>
         <input
           type="email"
           value={email}
           placeholder="Digite seu e-mail"
           onChange={(e) => setEmail(e.target.value)}
+          className={formField({ error: !!emailError }).input()}
         />
-        {emailError && <p>{emailError}</p>}
+        {emailError && <p className={formField().errorText()}>{emailError}</p>}
       </div>
-      <div className="PasswordInput">
-        <p>Senha</p>
+
+      <div className={formField().container()}>
+        <p className={formField({ error: !!passwordError }).label()}>Senha</p>
         <input
           type="password"
           value={password}
           placeholder="Digite sua senha"
           minLength={6}
           onChange={(e) => setPassword(e.target.value)}
+          className={formField({ error: !!passwordError }).input()}
         />
-        {passwordError && <p>{passwordError}</p>}
+        {passwordError && (
+          <p className={formField().errorText()}>{passwordError}</p>
+        )}
       </div>
-      {apiError && <p>{apiError}</p>}
-      <div>
-        <CustomButton title="Entrar" onClick={handleLogin} loading={loading} />
+
+      {apiError && <p className={formField().errorText()}>{apiError}</p>}
+
+      <div className={formField().container()}>
+        <CustomButton
+          title="Entrar"
+          onClick={handleLogin}
+          loading={loading}
+          spinner
+        />
       </div>
     </>
   );

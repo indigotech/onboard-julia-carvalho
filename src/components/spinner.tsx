@@ -1,13 +1,9 @@
 import React from "react";
+import { tv } from "tailwind-variants";
 
-const SpinnerStyle = {
-  width: "16px",
-  height: "16px",
-  border: "2px solid white",
-  borderTop: "2px solid transparent",
-  borderRadius: "50%",
-  animation: "spin 0.6s linear infinite",
-};
+export const spinner = tv({
+  base: "w-[16px] h-[16px] border-2 border-white border-t-transparent rounded-full animate-spin",
+});
 
 const SpinnerKeyframes = `
   @keyframes spin {
@@ -20,7 +16,7 @@ const SpinnerKeyframes = `
 export const Spinner = () => {
   return (
     <>
-      <div style={SpinnerStyle}></div>
+      <div className={spinner()}></div>
       <style>{SpinnerKeyframes}</style>
     </>
   );

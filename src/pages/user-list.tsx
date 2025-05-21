@@ -1,31 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { UserCard } from "../components/users/user-card";
+import { UserCard } from "../components/users/user-card.component";
 import { apiClient } from "../services/api";
 import { InfiniteScroll } from "../components/infinite-scroll";
 import { CustomButton } from "../components/custom-button";
 import { useNavigate } from "react-router";
+import { title, header } from "../styles/global.style";
 
 interface User {
   id: string;
   name: string;
   email: string;
 }
-
-const HeaderStyle: React.CSSProperties = {
-  display: "flex",
-  alignContent: "center",
-  alignItems: "center",
-  justifyContent: "left",
-  position: "sticky",
-  top: 0,
-  backgroundColor: "white",
-};
-
-const HeaderTitleStyle: React.CSSProperties = {
-  marginRight: "10px",
-  fontSize: "24px",
-  fontWeight: "bold",
-};
 
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -38,7 +23,9 @@ export const UserList = () => {
   const navigate = useNavigate();
 
   const fetchUsers = useCallback(async () => {
-    if (!token || loading || !hasMore) return;
+    if (!token || loading || !hasMore) {
+      return;
+    }
 
     setLoading(true);
     try {
@@ -74,8 +61,8 @@ export const UserList = () => {
         <p>{error}</p>
       ) : (
         <>
-          <div style={HeaderStyle}>
-            <div style={HeaderTitleStyle}>Lista de Usuários</div>
+          <div className={header()}>
+            <div className={title()}>Lista de Usuários</div>
             <CustomButton
               title="Criar um novo usuário"
               onClick={() => navigate("/create-user")}
